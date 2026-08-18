@@ -111,7 +111,7 @@ mini-erp/
 ### 1. Clone o repositório
 
 ```bash
-git clone URL_DO_REPOSITORIO
+git clone https://github.com/Henriquemnj/mini-erp-flask.git
 cd mini-erp
 ```
 

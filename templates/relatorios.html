@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios | Mini ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Relatórios gerenciais</h1>
+        <p>Mini ERP</p>
+    </header>
+
+    <main>
+        <a href="{{ url_for('inicio') }}">Voltar para o início</a>
+
+        <section class="resumo-estoque">
+            <div class="resumo-card">
+                <h3>Total vendido</h3>
+                <p>R$ {{ faturamento|moeda }}</p>
+            </div>
+
+            <div class="resumo-card">
+                <h3>Unidades vendidas</h3>
+                <p>{{ unidades_vendidas }}</p>
+            </div>
+
+            <div class="resumo-card">
+                <h3>Estoque atual</h3>
+                <p>{{ unidades_estoque }}</p>
+            </div>
+        </section>
+
+        <h2>Vendas por produto</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Unidades vendidas</th>
+                    <th>Faturamento</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for produto in vendas_por_produto %}
+                <tr>
+                    <td>{{ produto.nome }}</td>
+                    <td>{{ produto.quantidade }}</td>
+                    <td>R$ {{ produto.faturamento|moeda }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Compras por cliente</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Quantidade de vendas</th>
+                    <th>Total comprado</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for cliente in compras_por_cliente %}
+                <tr>
+                    <td>{{ cliente.nome }}</td>
+                    <td>{{ cliente.quantidade_vendas }}</td>
+                    <td>R$ {{ cliente.total_comprado|moeda }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

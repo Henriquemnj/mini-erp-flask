@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendas | Mini ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Registro de vendas</h1>
+        <p>Mini ERP</p>
+    </header>
+
+    <main>
+        <a href="{{ url_for('inicio') }}">Voltar para o início</a>
+
+        {% with mensagens = get_flashed_messages(with_categories=true) %}
+            {% for categoria, mensagem in mensagens %}
+                <div class="mensagem {{ categoria }}">
+                    {{ mensagem }}
+                </div>
+            {% endfor %}
+        {% endwith %}
+
+        <h2>Nova venda</h2>
+
+        <form method="POST">
+            <label for="cliente_id">Cliente:</label>
+            <select id="cliente_id" name="cliente_id" required>
+                <option value="">Selecione um cliente</option>
+
+                {% for cliente in clientes %}
+                    <option value="{{ cliente.id }}">
+                        {{ cliente.nome }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <label for="produto_id">Produto:</label>
+            <select id="produto_id" name="produto_id" required>
+                <option value="">Selecione um produto</option>
+
+                {% for produto in produtos %}
+                    <option value="{{ produto.id }}">
+                        {{ produto.nome }} — estoque: {{ produto.quantidade }}
+                    </option>
+                {% endfor %}
+            </select>
+
+            <label for="quantidade">Quantidade:</label>
+            <input
+                type="number"
+                id="quantidade"
+                name="quantidade"
+                min="1"
+                required
+            >
+
+            <button type="submit">Registrar venda</button>
+        </form>
+
+        <h2>Vendas registradas</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Data e hora</th>
+                    <th>Cliente</th>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for venda in vendas %}
+                <tr>
+                    <td>{{ venda.id }}</td>
+                    <td>{{ venda.data.strftime("%d/%m/%Y %H:%M") }}</td>
+                    <td>{{ venda.cliente.nome }}</td>
+                    <td>{{ venda.itens[0].produto.nome }}</td>
+                    <td>{{ venda.itens[0].quantidade }}</td>
+                    <td>R$ {{ venda.total|moeda }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

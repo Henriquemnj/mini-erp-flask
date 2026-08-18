@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produtos | Mini ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Cadastro de produtos</h1>
+        <p>Mini ERP</p>
+    </header>
+
+    <main>
+        <a href="{{ url_for('inicio') }}">Voltar para o início</a>
+
+        <h2>Novo produto</h2>
+
+        <form method="POST">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="descricao">Descrição:</label>
+            <input type="text" id="descricao" name="descricao">
+
+            <label for="preco">Preço:</label>
+            <input
+                type="number"
+                id="preco"
+                name="preco"
+                min="0"
+                step="0.01"
+                required
+            >
+
+            <label for="quantidade">Quantidade em estoque:</label>
+            <input
+                type="number"
+                id="quantidade"
+                name="quantidade"
+                min="0"
+                required
+            >
+
+            <button type="submit">Cadastrar produto</button>
+        </form>
+
+        <h2>Produtos cadastrados</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Preço</th>
+                    <th>Quantidade</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for produto in produtos %}
+                <tr>
+                    <td>{{ produto.id }}</td>
+                    <td>{{ produto.nome }}</td>
+                    <td>{{ produto.descricao }}</td>
+                    <td>R$ {{ produto.preco }}</td>
+                    <td>{{ produto.quantidade }}</td>
+                    <td>
+                        <a
+    class="botao-editar"
+    href="{{ url_for('editar_produto', id=produto.id) }}"
+>
+    Editar
+</a>
+
+    <form
+        class="form-excluir"
+        method="POST"
+        action="{{ url_for('excluir_produto', id=produto.id) }}"
+    >
+        <button class="botao-excluir" type="submit">
+            Excluir
+        </button>
+    </form>
+</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

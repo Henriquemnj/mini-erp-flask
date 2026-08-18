@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar cliente | Mini ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Editar cliente</h1>
+        <p>Mini ERP</p>
+    </header>
+
+    <main>
+        <a href="{{ url_for('clientes') }}">Voltar para clientes</a>
+
+        <form method="POST">
+            <label for="nome">Nome:</label>
+            <input
+                type="text"
+                id="nome"
+                name="nome"
+                value="{{ cliente.nome }}"
+                required
+            >
+
+            <label for="email">E-mail:</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                value="{{ cliente.email }}"
+                required
+            >
+
+            <label for="telefone">Telefone:</label>
+            <input
+                type="text"
+                id="telefone"
+                name="telefone"
+                value="{{ cliente.telefone }}"
+                required
+            >
+
+            <button type="submit">Salvar alterações</button>
+        </form>
+    </main>
+</body>
+</html>

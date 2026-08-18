@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financeiro | Mini ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Resumo financeiro</h1>
+        <p>Mini ERP</p>
+    </header>
+
+    <main>
+        <a href="{{ url_for('inicio') }}">Voltar para o início</a>
+
+        <section class="resumo-estoque">
+            <div class="resumo-card">
+                <h3>Faturamento</h3>
+                <p>R$ {{ faturamento|moeda }}</p>
+            </div>
+
+            <div class="resumo-card">
+                <h3>Vendas realizadas</h3>
+                <p>{{ quantidade_vendas }}</p>
+            </div>
+
+            <div class="resumo-card">
+                <h3>Ticket médio</h3>
+                <p>R$ {{ ticket_medio|moeda }}</p>
+            </div>
+        </section>
+
+        <h2>Histórico financeiro</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Venda</th>
+                    <th>Data e hora</th>
+                    <th>Cliente</th>
+                    <th>Itens</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for venda in vendas %}
+                <tr>
+                    <td>#{{ venda.id }}</td>
+                    <td>{{ venda.data.strftime("%d/%m/%Y %H:%M") }}</td>
+                    <td>{{ venda.cliente.nome }}</td>
+                    <td>
+                        {% for item in venda.itens %}
+                            {{ item.quantidade }}x {{ item.produto.nome }}
+                        {% endfor %}
+                    </td>
+                    <td>R$ {{ venda.total|moeda }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>

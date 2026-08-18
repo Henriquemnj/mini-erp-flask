@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Mini ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Mini ERP</h1>
+        <p>Dashboard de gestão empresarial</p>
+        <div class="usuario-logado">
+    <span>Olá, {{ session["usuario_nome"] }}</span>
+    <a href="{{ url_for('logout') }}">Sair</a>
+</div>
+    </header>
+
+    <main>
+        <h2>Visão geral</h2>
+
+        <section class="indicadores">
+            <div class="indicador-card">
+                <h3>Clientes</h3>
+                <p>{{ total_clientes }}</p>
+            </div>
+
+            <div class="indicador-card">
+                <h3>Produtos</h3>
+                <p>{{ total_produtos }}</p>
+            </div>
+
+            <div class="indicador-card">
+                <h3>Unidades em estoque</h3>
+                <p>{{ unidades_estoque }}</p>
+            </div>
+
+            <div class="indicador-card">
+                <h3>Vendas</h3>
+                <p>{{ total_vendas }}</p>
+            </div>
+
+            <div class="indicador-card">
+                <h3>Faturamento</h3>
+                <p>R$ {{ faturamento|moeda }}</p>
+            </div>
+        </section>
+
+        <h2>Acessar módulos</h2>
+
+        <section class="modulos">
+            <a class="modulo" href="{{ url_for('clientes') }}">
+                Clientes
+            </a>
+
+            <a class="modulo" href="{{ url_for('produtos') }}">
+                Produtos
+            </a>
+
+            <a class="modulo" href="{{ url_for('estoque') }}">
+                Estoque
+            </a>
+
+            <a class="modulo" href="{{ url_for('vendas') }}">
+                Vendas
+            </a>
+
+            <a class="modulo" href="{{ url_for('financeiro') }}">
+                Financeiro
+            </a>
+         
+            <a class="modulo" href="{{ url_for('relatorios') }}">
+    Relatórios
+</a>
+</a>
+        </section>
+    </main>
+</body>
+</html>

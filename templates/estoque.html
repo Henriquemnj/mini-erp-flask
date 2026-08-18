@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque | Mini ERP</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Controle de estoque</h1>
+        <p>Mini ERP</p>
+    </header>
+
+    <main>
+        <a href="{{ url_for('inicio') }}">Voltar para o início</a>
+{% with mensagens = get_flashed_messages(with_categories=true) %}
+    {% for categoria, mensagem in mensagens %}
+        <div class="mensagem {{ categoria }}">
+            {{ mensagem }}
+        </div>
+    {% endfor %}
+{% endwith %}
+        <section class="resumo-estoque">
+            <div class="resumo-card">
+                <h3>Produtos cadastrados</h3>
+                <p>{{ total_produtos }}</p>
+            </div>
+
+            <div class="resumo-card">
+                <h3>Unidades em estoque</h3>
+                <p>{{ total_unidades }}</p>
+            </div>
+
+            <div class="resumo-card">
+                <h3>Valor do estoque</h3>
+                <p>R$ {{ valor_total|moeda }}</p>
+            </div>
+        </section>
+
+        <h2>Posição do estoque</h2>
+
+        <table>
+          <thead>
+    <tr>
+        <th>Produto</th>
+        <th>Preço unitário</th>
+        <th>Quantidade</th>
+        <th>Valor total</th>
+        <th>Situação</th>
+        <th>Movimentação</th>
+    </tr>
+</thead>
+
+           <tbody>
+    {% for produto in produtos %}
+    <tr>
+        <td>{{ produto.nome }}</td>
+        <td>R$ {{ produto.preco|moeda }}</td>
+        <td>{{ produto.quantidade }}</td>
+        <td>R$ {{ (produto.preco * produto.quantidade)|moeda }}</td>
+
+        <td>
+            {% if produto.quantidade == 0 %}
+                <span class="status esgotado">Esgotado</span>
+            {% elif produto.quantidade <= 5 %}
+                <span class="status baixo">Estoque baixo</span>
+            {% else %}
+                <span class="status disponivel">Disponível</span>
+            {% endif %}
+        </td>
+
+        <td>
+            <form
+                class="form-movimentacao"
+                method="POST"
+                action="{{ url_for('movimentar_estoque', id=produto.id) }}"
+            >
+                <select name="tipo" required>
+                    <option value="entrada">Entrada</option>
+                    <option value="saida">Saída</option>
+                </select>
+
+                <input
+                    type="number"
+                    name="quantidade"
+                    min="1"
+                    placeholder="Qtd."
+                    required
+                >
+
+                <button type="submit">Confirmar</button>
+            </form>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+        </table>
+        <h2>Últimas movimentações</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Data e hora</th>
+            <th>Produto</th>
+            <th>Tipo</th>
+            <th>Quantidade</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for movimentacao in movimentacoes %}
+        <tr>
+            <td>{{ movimentacao.data.strftime("%d/%m/%Y %H:%M") }}</td>
+            <td>{{ movimentacao.produto.nome }}</td>
+            <td>{{ movimentacao.tipo|capitalize }}</td>
+            <td>{{ movimentacao.quantidade }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    </main>
+</body>
+</html>
